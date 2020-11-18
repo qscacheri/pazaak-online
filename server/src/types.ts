@@ -9,3 +9,8 @@ export type GameUpdateType = {
   type: typeof GAME_UPDATE;
   payload: { gameId: string; playerId: string; gameState: any };
 };
+
+export type Player = {
+  username: string;
+  id: string;
+};

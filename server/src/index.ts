@@ -1,6 +1,10 @@
 import express from 'express';
-import cors from 'cors';
-import { GAME_UPDATE } from './types';
+import { Server, Socket } from 'socket.io';
+import { Game } from './Game';
+import { GAME_UPDATE, Player } from './types';
+import { GamesManager } from './GamesManager';
+const queue: Player[] = [];
+const games: Map<string, Game> = new Map<string, Game>();
 
 const app = express();
 app.set('port', process.env.PORT || 3000);
@@ -8,7 +12,7 @@ app.set('port', process.env.PORT || 3000);
 let http = require('http').Server(app);
 // set up socket.io and bind it to our
 // http server.
-const io = require('socket.io')(http, {
+const io: Server = require('socket.io')(http, {
   cors: {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
@@ -20,13 +24,9 @@ app.get('/', (_: any, res: any) => {
   res.send('hello');
 });
 
-// whenever a user connects on port 3000 via
-// a websocket, log that a user has connected
-io.on('connection', function (socket: any) {
-  console.log('a user connected');
-  socket.on(GAME_UPDATE, () => {});
-});
+const manager = new GamesManager(io);
+io.on('connection', manager.socketHandler);
 
-const server = http.listen(4000, function () {
+http.listen(4000, function () {
   console.log('listening on localhost:4000');
 });

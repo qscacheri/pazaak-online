@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
+import { Route, Router, Switch } from 'react-router';
 import { api } from './api';
 import './App.css';
 import { ConnectedMainDeck } from './components/MainDeck';
-import GameBoard from './GameBoard';
 import { ADD_CARD_TO_MAINDECK } from './redux/game/types';
 import { store } from './redux/store';
 import { CHANGE_USERNAME } from './redux/user/types';
+import { createBrowserHistory } from 'history';
+import { GameBoard } from './components/GameBoard';
+import { Login } from './pages/Login';
 
+const history = createBrowserHistory();
 function App() {
   useEffect(() => {
-    store.dispatch({ type: CHANGE_USERNAME, payload: 'new username' });
-    const socket = api.connect();
-    console.log(socket);
-
     document.addEventListener('click', () => {
       store.dispatch({
         type: ADD_CARD_TO_MAINDECK,
@@ -28,11 +28,21 @@ function App() {
       });
     });
   }, []);
+
   return (
     <Provider store={store}>
-      <div className="App">
-        <GameBoard />
-      </div>
+      <Router history={history}>
+        <div className="App">
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route exact path="/game">
+              <GameBoard />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </Provider>
   );
 }
