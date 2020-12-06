@@ -1,5 +1,5 @@
 import React from 'react';
-import { api } from '../api';
+// import { api } from '../api';
 import { store } from '../redux/store';
 import { CHANGE_USERNAME } from '../redux/user/types';
 import styled from 'styled-components';

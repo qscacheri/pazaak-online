@@ -6,6 +6,7 @@ import {
 } from './types';
 
 const initialState: GameStateType = {
+  turn: 'me',
   player: {
     hand: {
       mainDeck: [],

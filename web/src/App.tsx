@@ -1,15 +1,13 @@
+import { createBrowserHistory } from 'history';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router';
-import { api } from './api';
 import './App.css';
-import { ConnectedMainDeck } from './components/MainDeck';
+import { GameBoard } from './components/GameBoard';
+import { Socket } from './components/Socket';
+import { Login } from './pages/Login';
 import { ADD_CARD_TO_MAINDECK } from './redux/game/types';
 import { store } from './redux/store';
-import { CHANGE_USERNAME } from './redux/user/types';
-import { createBrowserHistory } from 'history';
-import { GameBoard } from './components/GameBoard';
-import { Login } from './pages/Login';
 
 const history = createBrowserHistory();
 function App() {
@@ -21,7 +19,7 @@ function App() {
           player: 'me',
           card: {
             isMainDeck: true,
-            type: 'plus',
+            type: '+',
             value: Math.ceil(1 + Math.random() * 5),
           },
         },
@@ -31,18 +29,20 @@ function App() {
 
   return (
     <Provider store={store}>
-      <Router history={history}>
-        <div className="App">
-          <Switch>
-            <Route exact path="/">
-              <Login />
-            </Route>
-            <Route exact path="/game">
-              <GameBoard />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      <Socket>
+        <Router history={history}>
+          <div className="App">
+            <Switch>
+              <Route exact path="/">
+                <Login />
+              </Route>
+              <Route exact path="/game">
+                <GameBoard />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </Socket>
     </Provider>
   );
 }

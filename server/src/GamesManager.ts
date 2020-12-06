@@ -3,25 +3,31 @@ import { Game } from './Game';
 import { Player } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
+const GAME_UPDATE = 'GAME_UPDATE';
+const LOGIN = 'LOGIN';
+
 export class GamesManager {
   games: Map<string, Game> = new Map<string, Game>();
   waitingRoom: Player[] = [];
   io: Server;
 
-  constructor(io: any) {
+  constructor(io: Server) {
     this.io = io;
     this.socketHandler = this.socketHandler.bind(this);
+    this.testEmit = this.testEmit.bind(this);
+  }
+
+  testEmit(name: string) {
+    this.io.emit(name, { data: 'some data' });
   }
 
   socketHandler(socket: Socket) {
-    this.onNewPlayer(socket);
-    socket.on('GAME_UPDATE', this.onGameUpdate);
+    console.log('hello');
+
+    socket.on(LOGIN, () => this.onNewPlayer(socket));
   }
 
   async onNewPlayer(socket: Socket) {
-    console.log('new player...');
-    socket.emit('TEST');
-
     this.waitingRoom.push({
       username: (socket.handshake.query as any).username,
       id: socket.id,

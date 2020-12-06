@@ -6,6 +6,8 @@ export type Hand = {
 };
 
 export type GameStateType = {
+  turn: 'me' | 'them';
+
   player: {
     hand: Hand;
     wins: number;

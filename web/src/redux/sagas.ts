@@ -1,9 +1,9 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { api } from '../api';
+import { takeEvery } from 'redux-saga/effects';
+import { socket } from '../api';
 import { CHANGE_USERNAME } from './user/types';
 
 function* connect(action: any) {
-  api.connect(action.payload);
+  socket.emit('login', action.payload);
 }
 
 export function* rootSaga() {

@@ -1,40 +1,36 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { ConnectedMainDeck as MainDeck } from './MainDeck';
-import { useSocket } from './Socket';
+import { Hand } from './Hand';
 
 interface GameBoardProps {}
 
 const Container = styled.div`
-  width: 90%;
+  width: 100%;
+  height: 100%;
   padding: 5%;
-  background: linear-gradient(
+  box-sizing: border-box;
+  background: #d1d7e3;
+  /* background: linear-gradient(
     20deg,
     rgba(0, 13, 39, 1) 0%,
     rgba(35, 44, 60, 1) 100%
-  );
+  ); */
 `;
 const GridContainer = styled.div`
-  border: 2px solid #3f3f3d;
+  border: 2px solid #242c3d;
   border-radius: 20px;
   display: grid;
+  justify-content: space-between;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: minmax(250px, auto);
-  grid-template-areas:
-    'player-deck opponent-deck'
-    'player-deck opponent-deck';
 `;
 
-export const GameBoard: React.FC<GameBoardProps> = ({}) => {
-  const { socket } = useSocket();
-  useEffect(() => {
-    socket?.on('TEST', () => console.log('game joined!'));
-  }, [socket]);
+export const GameBoard: React.FC<GameBoardProps> = () => {
   return (
     <Container className="GameBoard">
       <GridContainer>
-        <MainDeck playerDeck />
-        <MainDeck opponentDeck />
+        <Hand playerDeck />
+        <Hand opponentDeck />
       </GridContainer>
     </Container>
   );

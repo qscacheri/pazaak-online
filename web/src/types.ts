@@ -1,4 +1,4 @@
-export type CardOperator = 'plus' | 'minus' | 'plus-minus';
+export type CardOperator = '+' | '-' | '+-';
 
 export type CardType = {
   type: CardOperator;

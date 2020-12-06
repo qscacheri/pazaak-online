@@ -23,6 +23,6 @@ export const Socket: React.FC = ({ children }) => {
   );
 };
 
-export const useSocket = () => {
+export const useSocketContext = () => {
   return useContext(SocketContext);
 };
